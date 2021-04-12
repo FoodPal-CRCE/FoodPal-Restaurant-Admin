@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "http://localhost:5000/",
+  baseURL: "http://http://Foodpalbackend-env.eba-kdguhvqc.ap-south-1.elasticbeanstalk.com",
   timeout: 1000,
 });
