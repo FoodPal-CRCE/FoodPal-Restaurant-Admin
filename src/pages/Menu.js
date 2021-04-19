@@ -144,17 +144,7 @@ export default function Menu() {
   } else {
     return (
       <h1>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis
-        maiores architecto ipsum quod! Distinctio molestias repellendus saepe
-        facilis porro aut recusandae, vitae nulla quos ad dolorum asperiores
-        natus ab esse libero aspernatur ducimus veniam cupiditate temporibus!
-        Aperiam animi fuga saepe veritatis numquam iusto quibusdam suscipit,
-        nulla sint explicabo necessitatibus rem provident ratione voluptas aut
-        quis porro soluta eaque. Quos cupiditate necessitatibus omnis similique
-        in sed consequuntur, adipisci delectus eius at neque tempore quis saepe
-        perspiciatis sunt quo dolores, est cum accusamus consectetur qui ducimus
-        harum ratione! Qui, minima optio amet tempore nam beatae animi
-        praesentium fugiat officiis doloribus odio impedit!
+        Lorem 
       </h1>
     );
   }

@@ -1,8 +1,10 @@
-import React  from 'react'
+import React, { useState }  from 'react'
 import { makeStyles } from "@material-ui/core/styles"
 import { Box, Container, Typography, Button } from '@material-ui/core';
 import AddIcon from "@material-ui/icons/Add";
 import TablesCardItem from "../components/tables/TablesCardItem"
+import Popup from '../components/tables/Popup';
+import TableForm from '../components/tables/TableForm';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -19,6 +21,8 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function Tables() {
+    const [openPopup, setOpenPopup] = useState(false);
+
     const classes = useStyles();
     return (
         <div className={classes.content}>
@@ -42,9 +46,17 @@ export default function Tables() {
                 variant='outlined'
                 color='primary'
                 startIcon={<AddIcon />}
+                onClick={()=>{setOpenPopup(true)}}
               >
                 Add table
               </Button>
+              <Popup 
+                title="Add Table"
+                openPopup={openPopup}
+                setOpenPopup={setOpenPopup}
+              >
+                <TableForm/>
+              </Popup>
             </Box>
           </Box>
 
