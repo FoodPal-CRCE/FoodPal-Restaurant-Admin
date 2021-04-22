@@ -7,7 +7,9 @@ const { Routes } = Constants.Urls.apis;
 // function getUserPayload(user) {
 //   return JSON.stringify(user);
 // }
-
+function makePayload(data){
+  return JSON.stringify(data)
+}
 function getRestaurantById() {
   const url = Routes.GET_RESTAURANT;
 
@@ -16,7 +18,13 @@ function getRestaurantById() {
     return restaurant;
   });
 }
+function addTable(tableNumber, capacity){
+  const url = Routes.ADD_TABLE;
+  const payload = makePayload({tableNumber, capacity})
+  return HttpHelper.postWithAuthParam(url, payload).then(()=>{console.log("Added Table")});
+}
 
 export const restaurantService = {
   getRestaurantById,
+  addTable,
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
@@ -7,6 +7,8 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import AllOrders from "../components/orders/AllOrders";
+import { useDispatch, useSelector } from "react-redux";
+import { getOrderById } from "../reducers/orderSlice";
 
 function Copyright() {
   return (
@@ -103,6 +105,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function OrdersSide() {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -111,10 +114,15 @@ export default function OrdersSide() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  const caller = () => {
+    dispatch(getOrderById());
+  }
+  useEffect(()=> {
+    caller();
+  }, [])
 
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
+  const orders = useSelector((state) => state.order.orders)
   return (
     <div className={classes.content}>
       <main>
@@ -122,7 +130,9 @@ export default function OrdersSide() {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             <Grid item>
-              <AllOrders />
+              <AllOrders 
+                orders={orders}
+              />
             </Grid>
           </Grid>
           <Box pt={4}>

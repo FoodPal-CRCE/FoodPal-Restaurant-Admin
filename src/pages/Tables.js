@@ -24,6 +24,7 @@ export default function Tables() {
     const [openPopup, setOpenPopup] = useState(false);
 
     const classes = useStyles();
+    
     return (
         <div className={classes.content}>
             <main>

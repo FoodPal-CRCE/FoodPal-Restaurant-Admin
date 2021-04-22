@@ -12,6 +12,8 @@ import Fab from "@material-ui/core/Fab";
 import RoomServiceIcon from "@material-ui/icons/RoomService";
 import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import OutdoorGrillIcon from "@material-ui/icons/OutdoorGrill";
+import { useDispatch } from "react-redux";
+import { orderUpdate } from "../../reducers/orderSlice";
 
 const Box = styled("div")(compose(spacing, palette));
 
@@ -41,13 +43,44 @@ const useStyles = makeStyles({
 
 export default function CustomizedTables({
   order,
-  handleIsPreparing,
-  handleIsPrepared,
-  handleIsServed,
   tableNumber,
   time,
 }) {
+  const dispatch = useDispatch();
   const classes = useStyles();
+  const handleIsPreparing = (order_id, item_id) => {
+    // console.log("Inside IsPreparing");
+    console.log(order_id);
+    console.log(item_id);
+    const values={
+      order_id,
+      item_id,
+      update_code: 1
+    }
+    dispatch(orderUpdate(values));
+
+  }
+  const handleIsPrepared = (order_id, item_id) => {
+    // console.log("Inside IsPrepared");
+    console.log(order_id);
+    console.log(item_id);
+    const values={
+      order_id,
+      item_id,
+      update_code: 2
+    }
+    dispatch(orderUpdate(values));
+  }
+  const handleIsServed = (order_id, item_id) => {
+    console.log(order_id);
+    console.log(item_id);
+    const values={
+      order_id,
+      item_id,
+      update_code: 3
+    }
+    dispatch(orderUpdate(values));
+  }
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="customized table">
@@ -83,7 +116,7 @@ export default function CustomizedTables({
               <StyledTableCell align="right">
                 <Fab
                   disabled={item.isPreparing}
-                  onClick={() => handleIsPreparing(order._id, item)}
+                  onClick={() => handleIsPreparing(order._id, item._id)}
                   variant="round"
                   value={item}
                 >
@@ -93,7 +126,7 @@ export default function CustomizedTables({
               <StyledTableCell align="right">
                 <Fab
                   disabled={item.isPrepared}
-                  onClick={() => handleIsPrepared(order._id, item)}
+                  onClick={() => handleIsPrepared(order._id, item._id)}
                   variant="round"
                 >
                   <AssignmentTurnedInIcon />
@@ -102,7 +135,7 @@ export default function CustomizedTables({
               <StyledTableCell align="right">
                 <Fab
                   disabled={item.isServed}
-                  onClick={() => handleIsServed(order._id, item)}
+                  onClick={() => handleIsServed(order._id, item._id)}
                   variant="round"
                 >
                   <RoomServiceIcon />

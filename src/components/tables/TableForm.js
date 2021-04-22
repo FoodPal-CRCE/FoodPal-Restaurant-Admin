@@ -13,13 +13,14 @@ const genderItems = [
 
 const initialFieldValues = {
     tableNumber: "",
-    capaacity: "",
+    capacity: "",
   };
 
 export default function TableForm() {
     const { values, handleInputChange } = useForm(initialFieldValues);
     const submitHandle = () => {
         console.log("Bhai bhai Dispatch");
+        console.log(values)
     }
     const handleSubmit = e => {
         e.preventDefault()

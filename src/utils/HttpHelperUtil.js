@@ -83,16 +83,25 @@ const HttpHelperUtil = {
       .then(handleResponse)
       .catch(handleError);
   },
-  //   postWithAuthParam: function (url, body) {
-  //     return instanceWithAuthHeader
-  //       .post(`${url}`, body, {
-  //         headers: {
-  //           ...getAuthHeader(),
-  //         },
-  //       })
-  //       .then(handleResponse)
-  //       .catch(handleError);
-  //   },
+  postWithAuthParam: function (url, payload) {
+      return instanceWithAuthHeader
+        .post(`${url}`, payload, {
+          headers: {
+            ...getAuthHeader(),
+          },
+        })
+        .then(handleResponse)
+        .catch(handleError);
+    },
+  patchWithAuthParam: function (url, payload) {
+    return instanceWithAuthHeader
+    .patch(`${url}`, payload, {
+      headers: {
+        ...getAuthHeader(),
+      },
+    }).then(handleResponse)
+    .catch(handleError);
+  },
   //   putWithAuthParam: function (url, body) {
   //     return instanceWithAuthHeader
   //       .put(`${url}`, body, {
