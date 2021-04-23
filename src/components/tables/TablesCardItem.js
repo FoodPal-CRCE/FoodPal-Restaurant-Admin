@@ -15,6 +15,9 @@ import CropFreeIcon from "@material-ui/icons/CropFree";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import DownloadIcon from "@material-ui/icons/ArrowDownward";
+import { useDispatch, useSelector } from "react-redux";
+import { Modal } from '@material-ui/core';
+import { deleteTable } from "../../reducers/tableSlice";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -33,19 +36,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function TablesCardItem() {
+
   const classes = useStyles();
-
-  const [data, setData] = useState({
-    id: "5fef0e0ff4b5ef08a357d814",
-    tableNumber: 1,
-  });
-
+  const data = useSelector((state) => state.table.tables);
+  // const [data, setData] = useState({
+  //   id: "5fef0e0ff4b5ef08a357d814",
+  //   tableNumber: 1,
+  // });
+  const dispatch = useDispatch();
   const [showQr, setShowQr] = useState(false);
-
-  const handleSetShowQr = () => {
+  const [jsonData, setJsonData] = useState(null); 
+  const handleSetShowQr = (id, tableNumber) => {
     setShowQr(!showQr);
+    var obj = {
+      id,
+      tableNumber
+    }
+    setJsonData(JSON.stringify(obj));
   };
-
+  
   const downloadQR = () => {
     const canvas = document.getElementById("qrcode");
     const pngUrl = canvas
@@ -61,7 +70,7 @@ export default function TablesCardItem() {
   };
   return (
     <React.Fragment>
-      <Card className={classes.root}>
+      {data && data.map((table) => (<Card className={classes.root}>
         <CardMedia
           className={classes.cover}
           image="https://www.btklsby.go.id/images/placeholder/food.png"
@@ -70,14 +79,14 @@ export default function TablesCardItem() {
           <Box display="flex" alignItems="center" flexDirection="row">
             <Box ml={1}>
               <Typography component="h5" variant="h4">
-                #1
+                #{table.tableNumber}
               </Typography>
             </Box>
             <Box ml={1}>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <PersonIcon color="inherit" fontSize="large" />
                 <Typography variant="h5" color="initial" component="h2">
-                  2
+                  {table.capacity}
                 </Typography>
               </div>
             </Box>
@@ -90,6 +99,10 @@ export default function TablesCardItem() {
             color="secondary"
             startIcon={<DeleteIcon />}
             style={{ marginRight: 20 }}
+            onClick={()=> {
+              console.log("Will call delete for: ", table._id);
+              dispatch(deleteTable(table._id));
+            }}
           >
             Delete
           </Button>
@@ -106,17 +119,23 @@ export default function TablesCardItem() {
             size="small"
             color="inherit"
             startIcon={<CropFreeIcon />}
-            onClick={() => handleSetShowQr()}
+            onClick={() => handleSetShowQr(table._id, table.tableNumber)}
           >
             QR
           </Button>
         </CardActions>
-      </Card>
-      {showQr && (
-        <div>
+        {showQr && (
+        <Modal
+        open={showQr}
+        onClose={()=> setShowQr(false)}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        style={{alignSelf:"center", alignItems:"center", justifyContent:"center", display:"flex"}}
+      >
+      <div>
           <QRCode
             id={"qrcode"}
-            value={JSON.stringify(data)}
+            value={jsonData}
             size={256}
             level={"H"}
             includeMargin={true}
@@ -132,7 +151,12 @@ export default function TablesCardItem() {
             </Button>
           </button>
         </div>
+      </Modal>
+        
       )}
+      </Card>
+      ))}
+      
     </React.Fragment>
   );
 }

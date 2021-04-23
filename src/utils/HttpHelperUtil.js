@@ -12,6 +12,7 @@ function getAuthHeader() {
 function handleResponse(response) {
   const { status, data } = response;
   // if (status === 'success') Toast.success(message);
+  console.log("aduyg");
   return data;
 }
 
@@ -22,6 +23,7 @@ async function handleError(error) {
 
   //   // actions.unauthenticate()();
   // }
+  console.log(error);
   return Promise.reject(error.response?.data?.error);
 }
 
@@ -102,6 +104,16 @@ const HttpHelperUtil = {
     }).then(handleResponse)
     .catch(handleError);
   },
+  deleteWithAuthParam: function ( url, payload) {
+    console.log("Inside Delete With Auth Param");
+    return instanceWithAuthHeader
+    .delete(`${url}`, payload, {
+      headers: {
+        ...getAuthHeader(),
+      },
+    }).then(handleResponse)
+    .catch(handleError)
+  }
   //   putWithAuthParam: function (url, body) {
   //     return instanceWithAuthHeader
   //       .put(`${url}`, body, {
@@ -122,16 +134,16 @@ const HttpHelperUtil = {
   //       .then(handleResponse)
   //       .catch(handleError);
   //   },
-  //   deleteWithAuthParam: function (url, body) {
-  //     return instanceWithAuthHeader
-  //       .delete(`${url}`, body, {
-  //         headers: {
-  //           ...getAuthHeader(),
-  //         },
-  //       })
-  //       .then(handleResponse)
-  //       .catch(handleError);
-  //   },
+    // deleteWithAuthParam: function (url, body) {
+    //   return instanceWithAuthHeader
+    //     .delete(`${url}`, body, {
+    //       headers: {
+    //         ...getAuthHeader(),
+    //       },
+    //     })
+    //     .then(handleResponse)
+    //     .catch(handleError);
+    // },
 };
 
 export default HttpHelperUtil;

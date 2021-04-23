@@ -1,10 +1,12 @@
-import React, { useState }  from 'react'
+import React, { useEffect, useState }  from 'react'
 import { makeStyles } from "@material-ui/core/styles"
 import { Box, Container, Typography, Button } from '@material-ui/core';
 import AddIcon from "@material-ui/icons/Add";
 import TablesCardItem from "../components/tables/TablesCardItem"
 import Popup from '../components/tables/Popup';
 import TableForm from '../components/tables/TableForm';
+import { useDispatch } from 'react-redux';
+import { getTables } from '../reducers/tableSlice';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +24,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Tables() {
     const [openPopup, setOpenPopup] = useState(false);
-
+    const dispatch = useDispatch();
+    const caller = () => {
+      console.log("Uncomment below line after adding route");
+      dispatch(getTables());
+    }
+    useEffect(()=> {
+      caller();
+    }, [])
     const classes = useStyles();
     
     return (

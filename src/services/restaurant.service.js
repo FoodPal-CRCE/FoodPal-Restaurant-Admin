@@ -23,8 +23,27 @@ function addTable(tableNumber, capacity){
   const payload = makePayload({tableNumber, capacity})
   return HttpHelper.postWithAuthParam(url, payload).then(()=>{console.log("Added Table")});
 }
-
+function TableUpdate(_id, capacity, tableNumber){
+  const url = Routes.UPDATE_TABLE;
+  const payload = makePayload({_id, tableNumber, capacity});
+  return HttpHelper.patchWithAuthParam(url, payload).then(()=>console.log("Table Updated"))
+}
+function tablesGet(){
+  const url = Routes.GET_TABLES;
+  return HttpHelper.get(url).then((tables)=>{
+    return tables
+  });
+}
+function tableDelete(_id){
+  const url = Routes.DELETE_TABLE;
+  const payload = makePayload({_id});
+  console.log("Payload: ", payload);
+  return HttpHelper.patchWithAuthParam(url, payload).then(()=> console.log("Table Deleted"))
+}
 export const restaurantService = {
   getRestaurantById,
   addTable,
+  TableUpdate,
+  tablesGet,
+  tableDelete
 };
