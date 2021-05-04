@@ -1,7 +1,7 @@
 const Constants = {
   Urls: {
     apis: {
-      BASE_URL: "http://Foodpalbackend-env-1.eba-nvs6b2gb.ap-south-1.elasticbeanstalk.com",
+      BASE_URL: "http://Foodpalbackend-env.eba-nevmpxfx.ap-south-1.elasticbeanstalk.com",
       // BASE_URL: "http://localhost:5000",
       Routes: {
         // USER: "/user",
