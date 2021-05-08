@@ -1,63 +1,118 @@
-import React, { useState, useEffect } from 'react'
-import { Grid, } from '@material-ui/core';
+import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { Grid, InputAdornment, Button } from "@material-ui/core";
 import Controls from "../../components/controls/Controls";
-import { useForm, Form } from '../../components/useForm';
-import Input from '../controls/Input';
-
-
-const genderItems = [
-    { id: 'male', title: 'Male' },
-    { id: 'female', title: 'Female' },
-    { id: 'other', title: 'Other' },
-]
+import { useForm, Form } from "../../components/useForm";
+import Input from "../controls/Input";
+import AirlineSeatReclineNormalIcon from "@material-ui/icons/AirlineSeatReclineNormal";
+import GroupIcon from "@material-ui/icons/Group";
+// const genderItems = [
+//     { id: 'male', title: 'Male' },
+//     { id: 'female', title: 'Female' },
+//     { id: 'other', title: 'Other' },
+// ]
 
 const initialFieldValues = {
-    tableNumber: "",
-    capacity: "",
-  };
+  capacity: null,
+  tableNumber: null,
+};
+const useStyles = makeStyles((theme) => ({
+  icons: {
+    color: theme.palette.primary.dark,
+  },
+}));
+export default function TableForm({ handleClickError, handleClickSuccess }) {
+  //   const submitHandle = () => {
+  //     console.log("Bhai bhai Dispatch");
+  //     console.log(values);
+  //   };
+  //   const handleSubmit = (e) => {
+  //     e.preventDefault();
+  //   };
+  const validate = (fieldValues = values) => {
+    let temp = { ...errors };
+    if ("capacity" in fieldValues)
+      temp.capacity = fieldValues.capacity ? "" : "This field is required.";
+    if ("tableNumber" in fieldValues)
+      temp.tableNumber = fieldValues.tableNumber
+        ? ""
+        : "This field is required.";
 
-export default function TableForm() {
-    const { values, handleInputChange } = useForm(initialFieldValues);
-    const submitHandle = () => {
-        console.log("Bhai bhai Dispatch");
-        console.log(values)
+    setErrors({
+      ...temp,
+    });
+    if (fieldValues === values)
+      return Object.values(temp).every((x) => x === "");
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      //dispatch here
+      console.log("Bhai bhai Dispatch");
+      console.log(values);
+      handleClickSuccess();
+    } else {
+      handleClickError();
     }
-    const handleSubmit = e => {
-        e.preventDefault()
-        
-    }
-    return (
-        <Form onSubmit={handleSubmit} >
-            <Grid>
-                <Grid item xs={12}>
-                    <Input
-                        name="TableNumber"
-                        label="Table Number"
-                        value={values.tableNumber}
-                        onChange={handleInputChange}
-                        style={{marginRight: "10%"}}
-                    />
-                    <Input
-                        label="Capacity"
-                        name="Capacity"
-                        value={values.capacity}
-                        onChange={handleInputChange}
-                        
-                    />
-             
-                        <Controls.Button
-                            type="submit"
-                            text="Submit"
-                            fullWidth
-                            size="medium"  
-                            onClick={()=>{
-                                submitHandle();
-                            }}
-                        />
-                        
-                  
-                </Grid>
-            </Grid>
-        </Form>
-    )
+  };
+  const {
+    values,
+    handleInputChange,
+    setValues,
+    setErrors,
+    resetForm,
+    errors,
+  } = useForm(initialFieldValues, true, validate);
+  const classes = useStyles();
+  return (
+    <Form>
+      <Grid>
+        <Grid item xs={12}>
+          <Controls.Input
+            name='tableNumber'
+            label='Table Number *'
+            fullWidth
+            value={values.tableNumber}
+            onChange={handleInputChange}
+            error={errors.tableNumber}
+            type='number'
+            helperText='Keep unique'
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <AirlineSeatReclineNormalIcon className={classes.icons} />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Controls.Input
+            name='capacity'
+            label='Capacity *'
+            fullWidth
+            value={values.capacity}
+            onChange={handleInputChange}
+            error={errors.capacity}
+            type='number'
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <GroupIcon className={classes.icons} />
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <Button
+            fullWidth
+            size='medium'
+            onClick={handleSubmit}
+            color='primary'
+            variant='contained'
+          >
+            Submit
+          </Button>
+        </Grid>
+      </Grid>
+    </Form>
+  );
 }
