@@ -86,34 +86,36 @@ const HttpHelperUtil = {
       .catch(handleError);
   },
   postWithAuthParam: function (url, payload) {
-      return instanceWithAuthHeader
-        .post(`${url}`, payload, {
-          headers: {
-            ...getAuthHeader(),
-          },
-        })
-        .then(handleResponse)
-        .catch(handleError);
-    },
+    return instanceWithAuthHeader
+      .post(`${url}`, payload, {
+        headers: {
+          ...getAuthHeader(),
+        },
+      })
+      .then(handleResponse)
+      .catch(handleError);
+  },
   patchWithAuthParam: function (url, payload) {
     return instanceWithAuthHeader
-    .patch(`${url}`, payload, {
-      headers: {
-        ...getAuthHeader(),
-      },
-    }).then(handleResponse)
-    .catch(handleError);
+      .patch(`${url}`, payload, {
+        headers: {
+          ...getAuthHeader(),
+        },
+      })
+      .then(handleResponse)
+      .catch(handleError);
   },
-  deleteWithAuthParam: function ( url, payload) {
+  deleteWithAuthParam: function (url, payload) {
     console.log("Inside Delete With Auth Param");
     return instanceWithAuthHeader
-    .delete(`${url}`, payload, {
-      headers: {
-        ...getAuthHeader(),
-      },
-    }).then(handleResponse)
-    .catch(handleError)
-  }
+      .delete(`${url}`, payload, {
+        headers: {
+          ...getAuthHeader(),
+        },
+      })
+      .then(handleResponse)
+      .catch(handleError);
+  },
   //   putWithAuthParam: function (url, body) {
   //     return instanceWithAuthHeader
   //       .put(`${url}`, body, {
@@ -134,16 +136,16 @@ const HttpHelperUtil = {
   //       .then(handleResponse)
   //       .catch(handleError);
   //   },
-    // deleteWithAuthParam: function (url, body) {
-    //   return instanceWithAuthHeader
-    //     .delete(`${url}`, body, {
-    //       headers: {
-    //         ...getAuthHeader(),
-    //       },
-    //     })
-    //     .then(handleResponse)
-    //     .catch(handleError);
-    // },
+  // deleteWithAuthParam: function (url, body) {
+  //   return instanceWithAuthHeader
+  //     .delete(`${url}`, body, {
+  //       headers: {
+  //         ...getAuthHeader(),
+  //       },
+  //     })
+  //     .then(handleResponse)
+  //     .catch(handleError);
+  // },
 };
 
 export default HttpHelperUtil;

@@ -1,7 +1,8 @@
 const Constants = {
   Urls: {
     apis: {
-      BASE_URL: "http://Foodpalbackend-env.eba-nevmpxfx.ap-south-1.elasticbeanstalk.com",
+      BASE_URL:
+        "http://Foodpalbackend-env.eba-nevmpxfx.ap-south-1.elasticbeanstalk.com",
       // BASE_URL: "http://localhost:5000",
       Routes: {
         // USER: "/user",
@@ -17,6 +18,9 @@ const Constants = {
         UPDATE_TABLE: "/restaurant/table/update",
         GET_TABLES: "/restaurant/table/get",
         DELETE_TABLE: "/restaurant/table/delete",
+        ADD_MENU_ITEM: "/restaurant/menu/add",
+        UPDATE_MENU_ITEM: "/restaurant/menu/update",
+        DELETE_MENU_ITEM: "/restaurant/menu/delete",
       },
     },
   },

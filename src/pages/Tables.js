@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import TablesCardItem from "../components/tables/TablesCardItem";
-import Popup from "../components/tables/Popup";
+import Popup from "../components/global/Popup";
 import TableForm from "../components/tables/TableForm";
 import { useDispatch } from "react-redux";
 import { getTables } from "../reducers/tableSlice";
@@ -98,6 +98,7 @@ export default function Tables() {
                 <TableForm
                   handleClickError={handleClickError}
                   handleClickSuccess={handleClickSuccess}
+                  setOpenPopup={setOpenPopup}
                 />
               </Popup>
             </Box>

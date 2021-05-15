@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 // import axios from "axios";
 import { restaurantService } from "../services/restaurant.service";
 
@@ -8,6 +9,64 @@ export const getMenu = createAsyncThunk(
     try {
       const restaurantData = await restaurantService.getRestaurantById();
       return restaurantData;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+export const addMenuItem = createAsyncThunk(
+  "restaurant/add_menu_item",
+  async (values, { rejectWithValue }) => {
+    try {
+      // const menuData = await restaurantService.addTable(
+      //   values.tableNumber,
+      //   values.capacity
+      // );
+      const menuData = await restaurantService.addMenuItem(values);
+      return menuData;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const updateMenuItem = createAsyncThunk(
+  "restaurant/update_menu_item",
+  async (values, { rejectWithValue }) => {
+    try {
+      const update = await restaurantService.updateMenuItem(values);
+      return update;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const deleteMenuItem = createAsyncThunk(
+  "restaurant/delete_menu_item",
+  async (values, { rejectWithValue }) => {
+    console.log("Inside Delete Thunk", values);
+    try {
+      var payload = JSON.stringify(values);
+      await axios({
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": JSON.parse(localStorage.getItem("me")),
+        },
+        data: payload,
+        url: "http://Foodpalbackend-env.eba-nevmpxfx.ap-south-1.elasticbeanstalk.com/restaurant/menu/delete",
+      });
+      return true;
     } catch (err) {
       if (!err.response) {
         throw err;
@@ -42,6 +101,15 @@ const menuSlice = createSlice({
       state.status = "failed";
       state.error = action.error;
       console.log("failed");
+      window.location.reload();
+    },
+    [addMenuItem.fulfilled]: (state, action) => {
+      window.location.reload();
+    },
+    [updateMenuItem.fulfilled]: (state, action) => {
+      window.location.reload();
+    },
+    [deleteMenuItem.fulfilled]: (state, action) => {
       window.location.reload();
     },
   },

@@ -6,7 +6,10 @@ export const addTable = createAsyncThunk(
   "restaurant/add_table",
   async (values, { rejectWithValue }) => {
     try {
-      const tableData = await restaurantService.addTable(values.tableNumber, values.capacity);
+      const tableData = await restaurantService.addTable(
+        values.tableNumber,
+        values.capacity
+      );
       return tableData;
     } catch (err) {
       if (!err.response) {
@@ -19,14 +22,17 @@ export const addTable = createAsyncThunk(
 
 export const updateTable = createAsyncThunk(
   "restaurant/updateTable",
-  async(values, {rejectWithValue}) => {
-    try{
-      const update = await restaurantService.TableUpdate(values._id, values.capacity, values.tableNumber);
+  async (values, { rejectWithValue }) => {
+    try {
+      const update = await restaurantService.TableUpdate(
+        values._id,
+        values.capacity,
+        values.tableNumber
+      );
       return update;
-    }
-    catch(err){
-      if(!err.response){
-      throw err;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
       }
       return rejectWithValue(err.response.data);
     }
@@ -35,47 +41,43 @@ export const updateTable = createAsyncThunk(
 
 export const getTables = createAsyncThunk(
   "restaurant/getTables",
-  async(values, {rejectWithValue}) => {
-    console.log("Inside Thunk")
-    try{
+  async (values, { rejectWithValue }) => {
+    console.log("Inside Thunk");
+    try {
       const tableData = await restaurantService.tablesGet();
       console.log(tableData);
       return tableData;
-    }
-    catch(err){
-      if(!err.response){
-      throw err;
-      }
-      return rejectWithValue(err.response.data);
-    }
-  }
-)
-
-export const deleteTable = createAsyncThunk(
-  "restaurant/deleteTable",
-  async(values, {rejectWithValue}) => {
-    console.log("Inside Delete Thunk", values);
-    try{
-      await restaurantService.tableDelete(values);
-      return true;
-    }
-    catch(err){
-      if(!err.response){
+    } catch (err) {
+      if (!err.response) {
         throw err;
       }
       return rejectWithValue(err.response.data);
     }
   }
-)
+);
+
+export const deleteTable = createAsyncThunk(
+  "restaurant/deleteTable",
+  async (values, { rejectWithValue }) => {
+    console.log("Inside Delete Thunk", values);
+    try {
+      await restaurantService.tableDelete(values);
+      return true;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 
 const tableSlice = createSlice({
   name: "table",
   initialState: {
-    tables: null
+    tables: null,
   },
-  reducers: {
-    
-  },
+  reducers: {},
   extraReducers: {
     [getTables.fulfilled]: (state, action) => {
       console.log(action.payload);
@@ -83,7 +85,13 @@ const tableSlice = createSlice({
     },
     [deleteTable.fulfilled]: (state, action) => {
       window.location.reload();
-    }
+    },
+    [addTable.fulfilled]: (state, action) => {
+      window.location.reload();
+    },
+    [updateTable.fulfilled]: (state, action) => {
+      window.location.reload();
+    },
   },
 });
 

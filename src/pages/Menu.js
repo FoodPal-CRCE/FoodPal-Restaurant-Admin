@@ -4,11 +4,14 @@ import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, Snackbar } from "@material-ui/core";
 
 import MenuCardItem from "../components/menu/MenuCardItem";
 import { useDispatch, useSelector } from "react-redux";
 import { getMenu } from "../reducers/menuSlice";
+import Popup from "../components/global/Popup";
+import MenuForm from "../components/menu/MenuForm";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -34,34 +37,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Menu() {
+  const [openPopup, setOpenPopup] = useState(false);
+  // snackbar
+  const [openError, setOpenError] = useState(false);
+  const handleCloseError = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenError(false);
+  };
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const handleCloseSuccess = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSuccess(false);
+  };
+  const handleClickError = () => {
+    setOpenError(true);
+  };
+  const handleClickSuccess = () => {
+    setOpenSuccess(true);
+  };
+
   const classes = useStyles();
-  // const [menu, setmenu] = useState([
-  //   {
-  //     items: [
-  //       {
-  //         _id: 1,
-  //         name: "Chicken Tikka Pizza",
-  //         price: 400,
-  //       },
-  //       {
-  //         _id: 2,
-  //         name: "Chicken Feast Pizza",
-  //         price: 500,
-  //       },
-  //     ],
-  //     name: "Main",
-  //   },
-  //   {
-  //     items: [
-  //       {
-  //         _id: 3,
-  //         name: "Icecream",
-  //         price: 100,
-  //       },
-  //     ],
-  //     name: "Dessert",
-  //   },
-  // ]);
   const menuStatus = useSelector((state) => state.menu.status);
   const dispatch = useDispatch();
   const menuData = useSelector((state) => state.menu.menu);
@@ -96,9 +95,23 @@ export default function Menu() {
                   variant='outlined'
                   color='primary'
                   startIcon={<AddIcon />}
+                  onClick={() => {
+                    setOpenPopup(true);
+                  }}
                 >
                   Add Item
                 </Button>
+                <Popup
+                  title='Add Menu Item'
+                  openPopup={openPopup}
+                  setOpenPopup={setOpenPopup}
+                >
+                  <MenuForm
+                    handleClickError={handleClickError}
+                    handleClickSuccess={handleClickSuccess}
+                    setOpenPopup={setOpenPopup}
+                  />
+                </Popup>
               </Box>
             </Box>
             <Grid
@@ -127,6 +140,9 @@ export default function Menu() {
                               <MenuCardItem
                                 name={item.name}
                                 price={item.price}
+                                sectionName={menuItem.name}
+                                sectionId={menuItem._id}
+                                itemId={item._id}
                               />
                             </Grid>
                           ))}
@@ -139,13 +155,27 @@ export default function Menu() {
             </Grid>
           </Container>
         </main>
+        <Snackbar
+          open={openError}
+          autoHideDuration={3000}
+          onClose={handleCloseError}
+        >
+          <Alert onClose={handleCloseError} severity='error'>
+            Please fill the fields correctly!
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={openSuccess}
+          autoHideDuration={3000}
+          onClose={handleCloseSuccess}
+        >
+          <Alert onClose={handleCloseSuccess} severity='success'>
+            Menu updated!
+          </Alert>
+        </Snackbar>
       </div>
     );
   } else {
-    return (
-      <h1>
-        Lorem 
-      </h1>
-    );
+    return <h1>Lorem</h1>;
   }
 }

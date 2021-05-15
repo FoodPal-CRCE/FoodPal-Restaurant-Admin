@@ -6,26 +6,24 @@ import { useForm, Form } from "../../components/useForm";
 import Input from "../controls/Input";
 import AirlineSeatReclineNormalIcon from "@material-ui/icons/AirlineSeatReclineNormal";
 import GroupIcon from "@material-ui/icons/Group";
+import { updateTable } from "../../reducers/tableSlice";
 import { useDispatch } from "react-redux";
-import { addTable } from "../../reducers/tableSlice";
 // const genderItems = [
 //     { id: 'male', title: 'Male' },
 //     { id: 'female', title: 'Female' },
 //     { id: 'other', title: 'Other' },
 // ]
 
-const initialFieldValues = {
-  capacity: null,
-  tableNumber: null,
-};
+var initialFieldValues = {};
 const useStyles = makeStyles((theme) => ({
   icons: {
     color: theme.palette.primary.dark,
   },
 }));
-export default function TableForm({
+export default function TableUpdateForm({
   handleClickError,
   handleClickSuccess,
+  tableData,
   setOpenPopup,
 }) {
   //   const submitHandle = () => {
@@ -35,8 +33,14 @@ export default function TableForm({
   //   const handleSubmit = (e) => {
   //     e.preventDefault();
   //   };
+
   const dispatch = useDispatch();
 
+  initialFieldValues = {
+    tableNumber: tableData.tableNumber,
+    capacity: tableData.capacity,
+  };
+  // console.log(initialFieldValues);
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
     if ("capacity" in fieldValues)
@@ -58,9 +62,11 @@ export default function TableForm({
       //dispatch here
       console.log("Bhai bhai Dispatch");
       console.log(values);
+      var finalValues = { ...values, _id: tableData._id };
       handleClickSuccess();
       setOpenPopup(false);
-      dispatch(addTable(values));
+
+      dispatch(updateTable(finalValues));
     } else {
       handleClickError();
     }
