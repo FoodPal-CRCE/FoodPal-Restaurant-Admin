@@ -105,6 +105,16 @@ const HttpHelperUtil = {
       .then(handleResponse)
       .catch(handleError);
   },
+  patchWithAuth: function(url){
+    return instanceWithAuthHeader
+    .patch(`${url}`,{
+      headers: {
+        ...getAuthHeader(),
+      },
+    })
+    .then(handleResponse)
+    .catch(handleError);
+  },
   deleteWithAuthParam: function (url, payload) {
     console.log("Inside Delete With Auth Param");
     return instanceWithAuthHeader

@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
   },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
+    backgroundImage: "url(https://firebasestorage.googleapis.com/v0/b/foodpal-ab824.appspot.com/o/photo-1567620905732-2d1ec7ab7445.jpg?alt=media&token=a449d032-3e99-4953-9195-c7c38b3269d3)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -106,6 +106,7 @@ export default function SignInSide() {
               name='password'
               label='Password *'
               fullWidth
+              type="password"
               value={values.password}
               onChange={handleInputChange}
             ></Controls.Input>

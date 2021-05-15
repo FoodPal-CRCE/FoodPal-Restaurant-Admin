@@ -22,9 +22,14 @@ function updateOrder(order_id, _id, update_code){
   console.log(payload);
   return HttpHelper.patchWithAuthParam(url, payload).then(console.log("God Knows"))
 }
+function updateIsPaid(order_id){
+  const url = Routes.UPDATE_IS_PAID + `${order_id}`;
+  return HttpHelper.patchWithAuth(url);
+}
 
   export const orderService = {
     getAllOrders,
     updateOrder,
+    updateIsPaid,
   };
   

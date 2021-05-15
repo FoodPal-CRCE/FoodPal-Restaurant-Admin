@@ -13,7 +13,8 @@ import RoomServiceIcon from "@material-ui/icons/RoomService";
 import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import OutdoorGrillIcon from "@material-ui/icons/OutdoorGrill";
 import { useDispatch } from "react-redux";
-import { orderUpdate } from "../../reducers/orderSlice";
+import { orderUpdate, updateIsPaid } from "../../reducers/orderSlice";
+import { Button } from "@material-ui/core";
 
 const Box = styled("div")(compose(spacing, palette));
 
@@ -48,6 +49,10 @@ export default function CustomizedTables({
 }) {
   const dispatch = useDispatch();
   const classes = useStyles();
+  
+  const handleIsPaid = (order_id) => {
+    dispatch(updateIsPaid(order_id));
+  }
   const handleIsPreparing = (order_id, item_id) => {
     // console.log("Inside IsPreparing");
     console.log(order_id);
@@ -103,7 +108,16 @@ export default function CustomizedTables({
             <StyledTableCell align="right">Quantity</StyledTableCell>
             <StyledTableCell align="center"></StyledTableCell>
             <StyledTableCell align="right">Actions</StyledTableCell>
-            <StyledTableCell align="center"></StyledTableCell>
+            <StyledTableCell align="center">
+              {<Button variant="outlined" onClick={() => {
+                handleIsPaid(order._id);
+              }}
+                color="secondary"
+                disabled={order.isPaid}
+              >
+                Completed Payment Using Cash
+              </Button>}
+            </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -141,6 +155,7 @@ export default function CustomizedTables({
                   <RoomServiceIcon />
                 </Fab>
               </StyledTableCell>
+              
             </StyledTableRow>
           ))}
         </TableBody>

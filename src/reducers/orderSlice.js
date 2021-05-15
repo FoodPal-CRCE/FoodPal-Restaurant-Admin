@@ -24,6 +24,20 @@ import {
       }
     }
   );
+  export const updateIsPaid = createAsyncThunk(
+    "order/updateIsPaid",
+    async (values, {rejectWithValue}) => {
+      try{
+        console.log(values);
+        const data = await orderService.updateIsPaid(values);
+        return data
+      }
+      catch(err){
+        console.log("Error: ", err)
+        return rejectWithValue(err);
+      }
+    }
+  )
   export const orderUpdate = createAsyncThunk(
     "order/update",
     async (values, { rejectWithValue }) => {
@@ -60,6 +74,10 @@ import {
     //    window.location.reload();
       },
       [orderUpdate.fulfilled]: (state, action) => {
+        window.location.reload();
+      },
+      [updateIsPaid.fulfilled]: (state, action) => {
+        console.log("Completed");
         window.location.reload();
       }
     },

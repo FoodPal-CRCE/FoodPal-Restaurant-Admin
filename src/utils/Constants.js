@@ -21,6 +21,7 @@ const Constants = {
         ADD_MENU_ITEM: "/restaurant/menu/add",
         UPDATE_MENU_ITEM: "/restaurant/menu/update",
         DELETE_MENU_ITEM: "/restaurant/menu/delete",
+        UPDATE_IS_PAID: "/orders/customer/paid/",
       },
     },
   },
