@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
-
+import Chart from "../components/dashboard/Chart";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
@@ -15,7 +15,6 @@ import { getRestaurant, changeRefreshed } from "../reducers/restaurantSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { getOrder } from "../reducers/orderSlice";
-
 
 function Copyright() {
   return (
@@ -108,15 +107,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
 function Dashboard({ actions, state }) {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   const dispatch = useDispatch();
   const restaurant = useSelector((state) => state.restaurant.restaurantData);
   let history = useHistory();
-  const refresh = useSelector((state) => state.restaurant.refreshed)
+  const refresh = useSelector((state) => state.restaurant.refreshed);
   useEffect(() => {
     dispatch(getRestaurant());
   }, [dispatch]);
@@ -130,7 +127,7 @@ function Dashboard({ actions, state }) {
           <Grid container spacing={3}>
             <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
-                <h1>{restaurant.name}</h1>
+                <Chart />
               </Paper>
             </Grid>
 

@@ -7,6 +7,11 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Title from "./Title";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getOrderById } from "../../reducers/orderSlice";
+import moment from "moment";
+import { useState } from "react";
 
 // Generate Order Data
 function createData(id, timestamp, itemName, tableNo, paymentMethod, quantity) {
@@ -40,34 +45,69 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Orders() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [showLess, setShowLess] = useState(true);
+  const orders = useSelector((state) => state.order.orders);
+  useEffect(() => {
+    dispatch(getOrderById());
+  }, [dispatch]);
+  var newRows = [];
+  if (orders) {
+    orders.map((order, index) => {
+      newRows.push({
+        id: index,
+        timestamp: moment(order.createdAt).format("DD MMM hh:mm a"),
+        tableNo: order.tableNumber,
+        total: order.total,
+        quantity: order.items.length,
+      });
+    });
+  }
   return (
     <React.Fragment>
       <Title>Recent Orders</Title>
-      <Table size="small">
+      <Table size='small'>
         <TableHead>
           <TableRow>
             <TableCell>Timestamp</TableCell>
-            <TableCell>Item Name</TableCell>
             <TableCell>Table No</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Quantity</TableCell>
+            <TableCell>Total</TableCell>
+            <TableCell align='right'>Quantity</TableCell>
+            {/* <TableCell align='right'>Quantity</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.timestamp}</TableCell>
-              <TableCell>{row.itemName}</TableCell>
-              <TableCell>{row.tableNo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{row.quantity}</TableCell>
-            </TableRow>
-          ))}
+          {showLess &&
+            newRows
+              .reverse()
+              .slice(0, 4)
+              .map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell>{row.timestamp}</TableCell>
+                  <TableCell>{row.tableNo}</TableCell>
+                  <TableCell>{row.total}</TableCell>
+                  <TableCell align='right'>{row.quantity}</TableCell>
+                </TableRow>
+              ))}
+          {!showLess &&
+            newRows.reverse().map((row) => (
+              <TableRow key={row.id}>
+                <TableCell>{row.timestamp}</TableCell>
+                <TableCell>{row.tableNo}</TableCell>
+                <TableCell>{row.total}</TableCell>
+                <TableCell align='right'>{row.quantity}</TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
       <div className={classes.seeMore}>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          See more orders
+        <Link
+          color='primary'
+          onClick={() => setShowLess(!showLess)}
+          style={{ cursor: "pointer" }}
+        >
+          {showLess && <a>See more orders</a>}
+          {!showLess && <a>See less orders</a>}
         </Link>
       </div>
     </React.Fragment>

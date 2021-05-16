@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useTheme } from "@material-ui/core/styles";
 import {
   LineChart,
@@ -6,9 +6,15 @@ import {
   XAxis,
   YAxis,
   Label,
+  Tooltip,
   ResponsiveContainer,
+  CartesianGrid,
+  Legend,
 } from "recharts";
 import Title from "./Title";
+import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { getChart } from "../../reducers/orderSlice";
 
 // Generate Sales Data
 function createData(time, amount) {
@@ -28,14 +34,28 @@ const data = [
 ];
 
 export default function Chart() {
+  const dispatch = useDispatch();
   const theme = useTheme();
+  useEffect(() => {
+    dispatch(getChart());
+  }, [dispatch]);
+  const chartValues = useSelector((state) => state.order.chartValues);
 
+  var newValues = [];
+  if (chartValues) {
+    chartValues.map((value) => {
+      newValues.push({
+        time: moment(value.time).format("DD-MMM hh:mm a"),
+        amount: value.amount,
+      });
+    });
+  }
   return (
     <React.Fragment>
-      <Title>Today</Title>
-      <ResponsiveContainer>
+      {/* <Title>Today</Title> */}
+      <ResponsiveContainer width='100%'>
         <LineChart
-          data={data}
+          data={newValues.slice(Math.max(newValues.length - 5, 0))}
           margin={{
             top: 16,
             right: 16,
@@ -43,21 +63,27 @@ export default function Chart() {
             left: 24,
           }}
         >
-          <XAxis dataKey="time" stroke={theme.palette.text.secondary} />
-          <YAxis stroke={theme.palette.text.secondary}>
+          <CartesianGrid />
+          <XAxis dataKey='time' stroke={theme.palette.text.secondary} />
+          <YAxis
+            stroke={theme.palette.text.secondary}
+            // domain={[0, "dataMax + 100"]}
+          >
             <Label
               angle={270}
-              position="left"
+              position='left'
               style={{ textAnchor: "middle", fill: theme.palette.text.primary }}
             >
-              Sales ($)
+              Sales (₹)
             </Label>
           </YAxis>
+          <Tooltip />
+          <Legend />
           <Line
-            type="monotone"
-            dataKey="amount"
+            type='monotone'
+            dataKey='amount'
             stroke={theme.palette.primary.main}
-            dot={false}
+            dot={true}
           />
         </LineChart>
       </ResponsiveContainer>
