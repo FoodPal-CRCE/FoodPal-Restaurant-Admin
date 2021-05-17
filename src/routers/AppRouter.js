@@ -9,6 +9,7 @@ import OrdersSide from "../pages/OrdersSide";
 import { saveme, authenticate, unAuthenticate } from "../reducers/signinSlice";
 import { useDispatch } from "react-redux";
 import Tables from "../pages/Tables";
+import Blogs from "../pages/Blogs";
 
 function Router({ ...props }) {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ function Router({ ...props }) {
           <PrivateRoute path="/menu" component={Menu} />
           <PrivateRoute path="/orders" component={OrdersSide} />
           <PrivateRoute path="/tables" component={Tables} />
+          <PrivateRoute path="/blogs" component={Blogs} />
         </Switch>
       </div>
     </BrowserRouter>

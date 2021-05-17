@@ -199,7 +199,7 @@ export default function Navbar() {
         </ListItemIcon>
         <ListItemText primary="Menu" />
       </ListItem>
-      <ListItem button>
+      <ListItem button onClick={()=>history.push('/blogs')}>
         <ListItemIcon>
           <LayersIcon />
         </ListItemIcon>

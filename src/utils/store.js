@@ -4,6 +4,7 @@ import signinReducer from "../reducers/signinSlice";
 import menuSlice from "../reducers/menuSlice";
 import orderSlice from "../reducers/orderSlice";
 import tableSlice from "../reducers/tableSlice";
+import blogSlice from "../reducers/blogSlice";
 
 export default configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export default configureStore({
     menu: menuSlice,
     order: orderSlice,
     table: tableSlice,
+    blog: blogSlice,
   },
 });
