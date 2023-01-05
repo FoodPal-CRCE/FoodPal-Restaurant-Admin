@@ -1,17 +1,31 @@
 pipeline {
-     agent any
-     stages {
-        stage("Build") {
+    agent any;
+    tools {
+        nodejs 'NodeJS'
+    }
+    stages {
+ 
+        stage('Initialize') {
             steps {
-                sh "whoami"
-                sh "sudo npm install"
-                sh "sudo npm run build"
+                sh '''
+                    npm install
+                '''
             }
         }
-        stage("Deploy") {
+ 
+        stage('Unit Tests') {
             steps {
-                sh "sudo rm -rf /var/www/jenkins-react-app"
-                sh "sudo cp -r ${WORKSPACE}/build/ /var/www/jenkins-react-app/"
+                sh '''
+                    npm run test -- --watchAll=false
+                '''
+            }
+        }
+ 
+        stage('Build') {
+            steps {
+                sh '''
+                    npm run build
+                '''
             }
         }
     }
